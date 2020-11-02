@@ -7,19 +7,20 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = merge(common, {
-  mode: 'production',
-  devtool: false,
+  mode: "production",
+  // devtool: false,
+  devtool: "source-map",
   output: {
     path: paths.build,
-    publicPath: '/',
-    filename: 'js/[name].[contenthash].bundle.js',
+    publicPath: "./",
+    filename: "js/[name].[contenthash].js",
   },
   plugins: [
     // Extracts CSS into separate files
     // Note: style-loader is for development, MiniCssExtractPlugin is for production
     new MiniCssExtractPlugin({
-      filename: 'styles/[name].[contenthash].css',
-      chunkFilename: '[id].css',
+      filename: "styles/[name].[contenthash].css",
+      chunkFilename: "[id].css",
     }),
   ],
   module: {
@@ -29,14 +30,15 @@ module.exports = merge(common, {
         use: [
           MiniCssExtractPlugin.loader,
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
               importLoaders: 2,
-              sourceMap: false,
+              // sourceMap: false,
+              sourceMap: true,
             },
           },
-          'postcss-loader',
-          'sass-loader',
+          "postcss-loader",
+          "sass-loader",
         ],
       },
     ],
@@ -48,7 +50,7 @@ module.exports = merge(common, {
     // instead of having their own. This also helps with long-term caching, since the chunks will only
     // change when actual code changes, not the webpack runtime.
     runtimeChunk: {
-      name: 'runtime',
+      name: "runtime",
     },
   },
   performance: {
@@ -56,4 +58,4 @@ module.exports = merge(common, {
     maxEntrypointSize: 512000,
     maxAssetSize: 512000,
   },
-})
+});
