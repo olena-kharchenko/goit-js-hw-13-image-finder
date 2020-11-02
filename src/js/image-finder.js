@@ -1,6 +1,6 @@
 import ImageApiService from './apiService';
 // import Handlebars from 'handlebars';
-// import photoCard from '../templates/photoCard.hbs';
+import photoCard from '../templates/photoCard.hbs';
 
 const formSearch = document.querySelector('#search-form');
 const inputSearch = document.querySelector('.search-input');
@@ -17,12 +17,22 @@ function onSearch(event) {
   event.preventDefault();
 
   imageApiService.query = event.currentTarget.elements.query.value;
+
   imageApiService.resetPage();
-  imageApiService.fetchImages();
+  clearArticlesContainer();
+  imageApiService.fetchImages().then(appendArticlesMarkup);
 
   // console.log(imageApiService.fetchImages());
 }
 
 function onLoadMore() {
-  imageApiService.fetchImages();
+  imageApiService.fetchImages().then(appendArticlesMarkup);
+}
+
+function appendArticlesMarkup(articles) {
+  articlesContainer.insertAdjacentHTML('beforeend', photoCard(articles));
+}
+
+function clearArticlesContainer() {
+  articlesContainer.innerHTML = '';
 }
