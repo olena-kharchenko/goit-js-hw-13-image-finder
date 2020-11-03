@@ -2,6 +2,7 @@ import ImageApiService from './apiService';
 // import Handlebars from 'handlebars';
 import photoCard from '../templates/photoCard.hbs';
 import animateScrollTo from 'animated-scroll-to';
+import { onOpenModal, onEscKeyPress } from './modal';
 
 const formSearch = document.querySelector('#search-form');
 const articlesContainer = document.querySelector('.gallery');
@@ -9,6 +10,7 @@ const loadMoreBtn = document.querySelector('[data-action="load-more"]');
 
 formSearch.addEventListener('submit', onSearch);
 loadMoreBtn.addEventListener('click', onLoadMore);
+articlesContainer.addEventListener('click', onOpenModal);
 
 const imageApiService = new ImageApiService();
 
