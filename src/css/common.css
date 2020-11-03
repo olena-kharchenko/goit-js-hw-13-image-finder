@@ -112,6 +112,7 @@ img {
 .stats-item {
   display: flex;
   flex-direction: column;
+  font-size: 18px;
 }
 
 .stats-item i {
