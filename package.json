@@ -17,9 +17,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/olena-kharchenko/webpack-5-royal.git"
+    "url": "git+https://github.com/olena-kharchenko/goit-js-hw-13-image-finder"
   },
-  "homepage": "https://github.com/olena-kharchenko/webpack-5-royal",
+  "homepage": "https://github.com/olena-kharchenko/goit-js-hw-13-image-finder",
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/plugin-proposal-class-properties": "^7.12.1",

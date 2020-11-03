@@ -2,7 +2,7 @@ import ImageApiService from './apiService';
 // import Handlebars from 'handlebars';
 import photoCard from '../templates/photoCard.hbs';
 import animateScrollTo from 'animated-scroll-to';
-import { onOpenModal, onEscKeyPress } from './modal';
+import { onOpenModal } from './modal';
 
 const formSearch = document.querySelector('#search-form');
 const articlesContainer = document.querySelector('.gallery');
@@ -35,6 +35,7 @@ function onSearch(event) {
 function onLoadMore() {
   imageApiService
     .fetchImages()
+
     .then(appendArticlesMarkup)
     .then(scrollToElement);
 }
@@ -49,6 +50,7 @@ function clearArticlesContainer() {
 
 function scrollToElement() {
   const indexToScroll = 12 * (imageApiService.page - 1) - 11;
+
   const itemToScroll = articlesContainer.children[indexToScroll];
   const options = {
     speed: 500,
