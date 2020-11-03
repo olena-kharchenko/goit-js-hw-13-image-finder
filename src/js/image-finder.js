@@ -1,10 +1,9 @@
 import ImageApiService from './apiService';
 // import Handlebars from 'handlebars';
 import photoCard from '../templates/photoCard.hbs';
+import animateScrollTo from 'animated-scroll-to';
 
 const formSearch = document.querySelector('#search-form');
-const inputSearch = document.querySelector('.search-input');
-const buttonSearch = document.querySelector('.search-btn');
 const articlesContainer = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('[data-action="load-more"]');
 
@@ -15,18 +14,27 @@ const imageApiService = new ImageApiService();
 
 function onSearch(event) {
   event.preventDefault();
+  loadMoreBtn.classList.add('is-hidden');
+  const inputSearchValue = event.currentTarget.elements.query.value;
 
-  imageApiService.query = event.currentTarget.elements.query.value;
+  imageApiService.query = inputSearchValue;
 
   imageApiService.resetPage();
   clearArticlesContainer();
-  imageApiService.fetchImages().then(appendArticlesMarkup);
-
-  // console.log(imageApiService.fetchImages());
+  imageApiService.fetchImages().then(articles => {
+    console.log(articles);
+    if (articles.length > 0) {
+      appendArticlesMarkup(articles);
+      loadMoreBtn.classList.remove('is-hidden');
+    }
+  });
 }
 
 function onLoadMore() {
-  imageApiService.fetchImages().then(appendArticlesMarkup);
+  imageApiService
+    .fetchImages()
+    .then(appendArticlesMarkup)
+    .then(scrollToElement);
 }
 
 function appendArticlesMarkup(articles) {
@@ -35,4 +43,14 @@ function appendArticlesMarkup(articles) {
 
 function clearArticlesContainer() {
   articlesContainer.innerHTML = '';
+}
+
+function scrollToElement() {
+  const indexToScroll = 12 * (imageApiService.page - 1) - 11;
+  const itemToScroll = articlesContainer.children[indexToScroll];
+  const options = {
+    speed: 500,
+    verticalOffset: -10,
+  };
+  animateScrollTo(itemToScroll, options);
 }

@@ -30,6 +30,8 @@ body {
   margin-right: 15px;
   padding-left: 15px;
   padding-right: 15px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   height: 35px;
   border-color: #ff4d00;
   border-style: dotted;
@@ -37,8 +39,17 @@ body {
   border-radius: 5px;
   font-family: inherit;
   font-size: inherit;
-  line-height: 1.4;
+  /* line-height: 1.4; */
   outline: none;
+}
+
+.search-input::placeholder {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.search-input:focus::placeholder {
+  opacity: 0;
 }
 
 .search-form {
@@ -109,4 +120,8 @@ img {
 .stats-item i {
   margin-bottom: 5px;
   color: #36454f;
+}
+
+.is-hidden {
+  display: none;
 }
