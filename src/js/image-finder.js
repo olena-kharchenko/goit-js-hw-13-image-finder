@@ -1,5 +1,4 @@
 import ImageApiService from './apiService';
-// import Handlebars from 'handlebars';
 import photoCard from '../templates/photoCard.hbs';
 import animateScrollTo from 'animated-scroll-to';
 import { onOpenModal } from './modal';
@@ -14,30 +13,36 @@ articlesContainer.addEventListener('click', onOpenModal);
 
 const imageApiService = new ImageApiService();
 
-function onSearch(event) {
+async function onSearch(event) {
   event.preventDefault();
-  loadMoreBtn.classList.add('is-hidden');
-  const inputSearchValue = event.currentTarget.elements.query.value;
 
-  imageApiService.query = inputSearchValue;
+  try {
+    const inputSearchValue = event.currentTarget.elements.query.value;
+    imageApiService.query = inputSearchValue;
 
-  imageApiService.resetPage();
-  clearArticlesContainer();
-  imageApiService.fetchImages().then(articles => {
-    console.log(articles);
-    if (articles.length > 0) {
-      appendArticlesMarkup(articles);
+    loadMoreBtn.classList.add('is-hidden');
+
+    imageApiService.resetPage();
+    clearArticlesContainer();
+    const response = await imageApiService.fetchImages();
+
+    if (response.length > 0) {
+      appendArticlesMarkup(response);
       loadMoreBtn.classList.remove('is-hidden');
     }
-  });
+  } catch (error) {
+    console.log('Ошибка');
+  }
 }
 
-function onLoadMore() {
-  imageApiService
-    .fetchImages()
-
-    .then(appendArticlesMarkup)
-    .then(scrollToElement);
+async function onLoadMore() {
+  try {
+    const response = await imageApiService.fetchImages();
+    appendArticlesMarkup(response);
+    scrollToElement();
+  } catch (error) {
+    console.log('Ошибка');
+  }
 }
 
 function appendArticlesMarkup(articles) {
@@ -50,11 +55,38 @@ function clearArticlesContainer() {
 
 function scrollToElement() {
   const indexToScroll = 12 * (imageApiService.page - 1) - 11;
-
   const itemToScroll = articlesContainer.children[indexToScroll];
   const options = {
     speed: 500,
     verticalOffset: -10,
   };
+
   animateScrollTo(itemToScroll, options);
 }
+
+// Промисы
+
+// function onSearch(event) {
+//   event.preventDefault();
+
+//   const inputSearchValue = event.currentTarget.elements.query.value;
+//   imageApiService.query = inputSearchValue;
+
+//   loadMoreBtn.classList.add('is-hidden');
+
+//   imageApiService.resetPage();
+//   clearArticlesContainer();
+//   imageApiService.fetchImages().then(articles => {
+//     if (articles.length > 0) {
+//       appendArticlesMarkup(articles);
+//       loadMoreBtn.classList.remove('is-hidden');
+//     }
+//   });
+// }
+
+// function onLoadMore() {
+//   imageApiService
+//     .fetchImages()
+//     .then(appendArticlesMarkup)
+//     .then(scrollToElement);
+// }
